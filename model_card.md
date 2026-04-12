@@ -21,16 +21,45 @@ Prompts:
 
 ## 3. How the Model Works  
 
-Explain your scoring approach in simple language.  
+3.1. What parts of a song are we using?
 
-Prompts:  
+- The style of music (genre), like pop or lofi.
+- The vibe (mood), like happy, chill, or intense.
+- A few “sound characteristics”:
+- energy (calm vs high-powered),
+- danceability (how groovy it feels),
+- tempo (slow vs fast beat),
+- acousticness (more natural instruments vs electronic),
+- valence (more cheerful vs more serious feeling).
 
-- What features of each song are used (genre, energy, mood, etc.)  
-- What user preferences are considered  
-- How does the model turn those into a score  
-- What changes did you make from the starter logic  
+3.2. What do we use about the listener?
 
-Avoid code here. Pretend you are explaining the idea to a friend who does not program.
+- What kind of genre they usually like.
+- What mood they want right now.
+- Their preferred sound profile:
+- how energetic,
+- how danceable,
+- how fast,
+- how acoustic,
+- how cheerful.
+- How important each of those is to them (for example, maybe genre matters a lot, tempo matters a little).
+
+3.3. How do we turn that into one score?
+- For each song, we ask: “How close is this song to what the person likes?”
+- If genre matches, that gets good points.
+- If mood matches, that gets good points.
+- For things like energy or tempo, closer values get more points.
+- - Example: if someone likes medium-high energy, a song near that gets a high score.
+- - A song that is way too calm or way too intense gets fewer points.
+- Then we combine all those points using importance weights, giving us one final score per song.
+- Highest scores become the top recommendations.
+
+3.4. What changed from the starter version?
+- Before, it was basically a placeholder and did not truly “understand” taste.
+- Now it actually compares each song to the listener’s preferences.
+- Instead of just returning songs in simple order, it ranks them by match quality.
+- It can also explain why a song was recommended (for example: same genre, similar energy, matching mood).
+
 
 ---
 

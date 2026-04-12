@@ -22,13 +22,21 @@ Explain your design in plain language.
 Some prompts to answer:
 
 - What features does each `Song` use in your system
-  - For example: genre, mood, energy, tempo
+  - Each song is described by things like its genre, mood, energy, tempo, valence (how positive or cheerful it feels), danceability, and acousticness. These help the system understand what the song sounds and feels like.
 - What information does your `UserProfile` store
+  - The user profile stores what the listener likes, such as their favorite genre, favorite mood, target energy level, and whether they like acoustic music. In a richer version, it can also store preferred tempo, danceability, valence, and weights for each feature.
 - How does your `Recommender` compute a score for each song
+  - It compares each song to the user’s preferences. If the genre matches, the song gets extra points. If the mood matches, it gets more points. For features like energy and tempo, it gives higher points to songs that are closer to the user’s target, not just higher or lower. Then it adds everything up into one total score.
 - How do you choose which songs to recommend
+  - After every song gets a score, the system sorts all songs from highest score to lowest score. The top ones are the recommendations, because they best match the user’s taste.
 
-You can include a simple diagram or bullet list if helpful.
+Here's the flow diagram:
 
+![Flow diagram](flow_diagram.png)
+
+## Output
+
+![Output](output.png)
 ---
 
 ## Getting Started
