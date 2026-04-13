@@ -34,9 +34,36 @@ Here's the flow diagram:
 
 ![Flow diagram](flow_diagram.png)
 
+---
+
 ## Output
 
 ![Output](output.png)
+
+### Profile 1: High-Energy Pop
+
+![Profile1](high_energy_pop_profile.png)
+
+### Profile 2: Chill Lofi 
+
+![Profile2](chill_lofi_profile.png)
+
+### Profile 3: Deep Intense Rock
+
+![Profile3](deep_intense_rock.png)
+
+### Profile 4: Rock + Sad Contrast
+
+![Profile4](rock_sad_profile.png)
+
+### Profile 5: Chill Lofi Fast Tempo
+
+![Profile5](chill_lofi_fast_profile.png)
+
+### Profile 6: Focused Lofi Detailed
+
+![Profile6](focussed_lofi_profile.png)
+
 ---
 
 ## Getting Started
@@ -74,27 +101,25 @@ You can add more tests in `tests/test_recommender.py`.
 
 ---
 
-## Experiments You Tried
-
-Use this section to document the experiments you ran. For example:
+## Experiments I Tried
 
 - What happened when you changed the weight on genre from 2.0 to 0.5
+  
+  - Genre mattered much less. Energy and other numeric matches drove more of the ranking. Some songs from near genres moved up. The list felt broader, but sometimes less style-accurate.
+
 - What happened when you added tempo or valence to the score
+
+  - It improved tie-breaking between similar songs. Recommendations felt a bit more fine-tuned. The effect was smaller than genre, mood, or energy because these features had lower weights.
+
 - How did your system behave for different types of users
+
+  - Clear profiles like pop/happy and lofi/chill got strong, stable results. Conflicting profiles still got results, but they were less intuitive. Users with rare genre-mood combos had fewer good options. Extreme preferences were harder to satisfy when the catalog had no close songs.
 
 ---
 
 ## Limitations and Risks
 
-Summarize some limitations of your recommender.
-
-Examples:
-
-- It only works on a tiny catalog
-- It does not understand lyrics or language
-- It might over favor one genre or mood
-
-You will go deeper on this in your model card.
+The catalog is very small, so coverage is limited. Some genres and moods are underrepresented. Exact matching for genre and mood can be too strict. Feature weights can unintentionally favor some users over others. The model does not use lyrics, context, or user history over time.
 
 ---
 
@@ -123,97 +148,75 @@ Combines reflection and model card framing from the Module 3 guidance. :contentR
 
 Give your recommender a name, for example:
 
-> VibeFinder 1.0
+> VibeMatch Mini
 
 ---
 
 ## 2. Intended Use
 
-- What is this system trying to do
-- Who is it for
-
-Example:
-
-> This model suggests 3 to 5 songs from a small catalog based on a user's preferred genre, mood, and energy level. It is for classroom exploration only, not for real users.
+It suggests songs users will probably like from a small catalog. It compares their taste profile to each song. Then it ranks songs and shows the top matches. 
 
 ---
 
 ## 3. How It Works (Short Explanation)
 
-Describe your scoring logic in plain language.
-
-- What features of each song does it consider
-- What information about the user does it use
-- How does it turn those into a number
-
-Try to avoid code in this section, treat it like an explanation to a non programmer.
+The system compares each song to the user profile. It gives points for genre match and mood match. It gives more points when energy and other numeric features are close to the target. Then it adds all points and ranks songs from highest to lowest.
 
 ---
 
 ## 4. Data
 
-Describe your dataset.
-
-- How many songs are in `data/songs.csv`
-- Did you add or remove any songs
-- What kinds of genres or moods are represented
-- Whose taste does this data mostly reflect
+We used a small dataset with 18 songs. Each song has genre, mood, energy, tempo, valence, danceability, and acousticness. It is useful for learning, but too small for real-world quality. Some genre-mood combinations are missing, so certain users get fewer good matches.
 
 ---
 
 ## 5. Strengths
 
-Where does your recommender work well
-
-You can think about:
-- Situations where the top results "felt right"
-- Particular user profiles it served well
-- Simplicity or transparency benefits
+- It works well for clear tastes like pop/happy or lofi/chill.
+- It gives easy-to-understand reasons for each recommendation.
+- It ranks songs consistently when preferences are similar.
+- It responds clearly when we change weights, so behavior is transparent.
+- It is simple to run and test in the CLI.
+- It is good for learning how scoring and ranking work.
 
 ---
 
 ## 6. Limitations and Bias
 
-Where does your recommender struggle
-
-Some prompts:
-- Does it ignore some genres or moods
-- Does it treat all users as if they have the same taste shape
-- Is it biased toward high energy or one genre by default
-- How could this be unfair if used in a real product
+The catalog is small, so some tastes have very few matches. Lofi and chill are overrepresented, so those users get better coverage. Exact matching for genre and mood can be too strict. Extreme preferences can be hard to satisfy if the dataset has no close songs. Some features, like acousticness, have low weight and may be underused.
 
 ---
 
 ## 7. Evaluation
 
-How did you check your system
-
-Examples:
-- You tried multiple user profiles and wrote down whether the results matched your expectations
-- You compared your simulation to what a real app like Spotify or YouTube tends to recommend
-- You wrote tests for your scoring logic
-
-You do not need a numeric metric, but if you used one, explain what it measures.
+- I ran the recommender with multiple user profiles. 
+- Compared normal profiles and edge-case profiles. 
+- Changed weights and feature rules to test sensitivity. 
+- Checked whether top results and explanations matched the expectations.
 
 ---
 
 ## 8. Future Work
 
-If you had more time, how would you improve this recommender
-
-Examples:
-
-- Add support for multiple users and "group vibe" recommendations
-- Balance diversity of songs instead of always picking the closest match
-- Use more features, like tempo ranges or lyric themes
+- Add more songs and more balanced genre-mood coverage. 
+- Support partial similarity between related genres and moods instead of exact match only. 
+- Let users set feature weights or learn weights from feedback over time.
 
 ---
 
 ## 9. Personal Reflection
 
-A few sentences about what you learned:
+A few sentences about what I learned:
 
 - What surprised you about how your system behaved
+
+  - Small scoring changes caused big ranking changes. Turning one feature on or off shifted the top songs quickly. Some results looked “right” even when the logic was very simple. Bias from the dataset showed up faster than expected.
+
 - How did building this change how you think about real music recommenders
+
+  - Real recommenders are not just “smart.” They are many design choices. Weights, data coverage, and feature selection matter a lot. Even simple models can shape what people keep hearing. So fairness and diversity checks are as important as accuracy.
+
 - Where do you think human judgment still matters, even if the model seems "smart"
+
+  - I still needed to double-check fairness claims, result quality, and naming/wording choices. I also needed to verify that changes matched my intent before keeping them.
 
